@@ -17,6 +17,7 @@ void interval_map<K, V>::assign(K const& keyBegin, K const& keyEnd, V const& val
         if(val == m_valBegin) return;
         iterator itFirst = m_map.insert_or_assign(m_map.begin(), keyEnd, m_valBegin);
         m_map.insert_or_assign(itFirst, keyBegin, val); //amortized O(1) since keyBegin is right before it1 (it1 is the first element in the map)
+        _verify(keyBegin, keyEnd, val);
         return;
     }
 
@@ -45,6 +46,7 @@ void interval_map<K, V>::assign(K const& keyBegin, K const& keyEnd, V const& val
         ++itBegin; //start of erase
     }
     m_map.erase(itBegin, itEnd);
+    _verify(keyBegin, keyEnd, val);
 }
 
 // Operator[]
@@ -86,7 +88,6 @@ void interval_map<K, V>::_verify(const K& keyBegin, const K& keyEnd, const V& va
     //4. The interval should have the desired value.
     assert( val == it0->second || m_map.upper_bound(keyBegin) == m_map.begin() );
 
-    //5. Canonical representation: no empty intervals
     it = m_map.begin();
     while ( it != m_map.end() )
     {
@@ -94,7 +95,7 @@ void interval_map<K, V>::_verify(const K& keyBegin, const K& keyEnd, const V& va
         ++it_next;
         if ( it_next != m_map.end() )
         {
-            // 6. No empty intervals.
+            // 5. No empty intervals.
             assert( it->first < it_next->first );
         }
         ++it;

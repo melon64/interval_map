@@ -1,1 +1,1 @@
-add_executable(run interval_map.cpp)
+add_executable(check_header dummy.cpp)
