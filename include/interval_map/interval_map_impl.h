@@ -21,6 +21,6 @@ private:
     void _verify(const K& keyBegin, const K& keyEnd, const V& val) const;
 };
 
-#include "interval_map.tpp"
+#include "interval_map_impl.tpp"
 
 #endif
